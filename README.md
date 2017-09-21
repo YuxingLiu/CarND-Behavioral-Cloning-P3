@@ -17,9 +17,9 @@ Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/4
 
 [//]: # (Image References)
 
-[image1]: ./examples/placeholder.png "Model Visualization"
-[image2]: ./examples/placeholder.png "Grayscaling"
-[image3]: ./examples/placeholder_small.png "Recovery Image"
+[image1]: ./images/center.jpg "Center Image"
+[image2]: ./images/left.jpg "Left Image"
+[image3]: ./images/right.jpg "Right Image"
 [image4]: ./examples/placeholder_small.png "Recovery Image"
 [image5]: ./examples/placeholder_small.png "Recovery Image"
 [image6]: ./examples/placeholder_small.png "Normal Image"
