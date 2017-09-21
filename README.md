@@ -18,7 +18,7 @@ Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/4
 [//]: # (Image References)
 
 [image1]: ./images/center.jpg "Center Image"
-[image2]: ./images/multiple_cameras.png "Multiple Cameras"
+[image2]: ./images/side_cameras.png "Multiple Cameras"
 [image3]: ./images/left.jpg "Left Image"
 [image4]: ./images/right.jpg "Right Image"
 [image5]: ./images/left_cw.jpg "Left Image Clockwise"
@@ -48,12 +48,41 @@ Then I repeated this process on track one in clockwise direction, in order to av
 ![alt text][image6]
 ![alt text][image7]
 
-To augment the data sat, I also flipped images and angles thinking that this would ... For example, here is an image that has then been flipped:
+To augment the dataset, I also flipped images and angles thinking that this would help the model generalize better. After the collection process, I had 58836 data points. To work with such large amounts of data in a momory-efficient way, I use a Python generator to pull pieces of the data and process them on the fly. The code to record the path of images and steer angles are shown below:
+
+```python
+path = 'data_track1'
+samples = []
+with open(path + '/driving_log.csv') as csvfile:
+    reader = csv.reader(csvfile)
+    for line in reader:
+        # Record the path of center camera images and steer angles
+        center_path = path + '/IMG/' + line[0].split('\\')[-1]
+        center_angle = float(line[3])
+        # To flip images within the generator function, add flag_flip as the third entry
+        # flag_flip=1 for original image, flag_flip=0 for flipped image
+        samples.append((center_path, center_angle, 1))
+
+        # Create adjusted steering measurements for the side camera images
+        correction = 0.1  # this is a parameter to tune
+        left_path = path + '/IMG/' + line[1].split('\\')[-1]
+        left_angle = center_angle + correction
+        samples.append((left_path, left_angle, 1))
+        right_path = path + '/IMG/' + line[2].split('\\')[-1]
+        right_angle = center_angle - correction
+        samples.append((right_path, right_angle, 1))
+
+        # Flip images horizontally for data augmentation
+        samples.append((center_path, -center_angle, -1))
+        samples.append((left_path, -left_angle, -1))
+        samples.append((right_path, -right_angle, -1))
+```
+
+ and randomly put 20% of the data into a validation set.
 
 
-Etc ....
+I preprocessed this data by ...
 
-After the collection process, I had X number of data points. I then preprocessed this data by ...
 
 ---
 
