@@ -33,7 +33,7 @@ To capture good driving behavior, I first recorded four laps on track one in a c
 
 ![alt text][image1]
 
-To train the model to be able to recover from being off-center, I use the side camera images, which are associated with adjusted steering angles as illstrated below:
+To train the model to be able to recover from being off-center, I used the side camera images, which are associated with adjusted steering angles as illstrated below:
 
 ![alt text][image2]
 
@@ -48,7 +48,7 @@ Then I repeated this process on track one in clockwise direction, in order to av
 ![alt text][image6]
 ![alt text][image7]
 
-To augment the dataset, I also flipped images and angles thinking that this would help the model generalize better. After the collection process, I had 58836 data points. To work with such large amounts of data in a momory-efficient way, I use a Python generator to pull pieces of the data and process them on the fly. The code to record the path of images and steer angles are shown below:
+To augment the dataset, I also flipped images and angles thinking that this would help the model generalize better. After the collection process, I had 58836 data points. To work with such large amounts of data in a momory-efficient way, I used a Python generator to pull pieces of the data and process them on the fly. The code to record the path of images and steer angles are shown below:
 
 ```python
 path = 'data_track1'
@@ -104,7 +104,7 @@ def generator(samples, batch_size=32):
             yield shuffle(X_train, y_train)
 ```
 
-Then, the dataset is shuffeled and splitted, such that 20% of the data is used for validation:
+Then, the dataset was shuffeled and splitted into two parts, such that 20% of the data is used for validation:
 
 ```python
 train_samples, validation_samples = train_test_split(samples, test_size=0.2)
@@ -112,8 +112,16 @@ train_generator = generator(train_samples, batch_size=32)
 validation_generator = generator(validation_samples, batch_size=32)
 ```
 
-I preprocessed this data by ...
+Finally, I preprocessed this data by image normalization and cropping, using a lambda layer and Cropping2D layer in Keras:
 
+```python
+# Define network architecture using Keras
+model = Sequential()
+# Normalization
+model.add(Lambda(lambda x: (x/255.0) - 0.5, input_shape=(160, 320, 3)))
+# Trim image to only see section with road
+model.add(Cropping2D(cropping=((60, 20), (0, 0))))
+```
 
 ---
 
