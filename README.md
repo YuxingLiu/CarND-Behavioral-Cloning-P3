@@ -104,7 +104,7 @@ def generator(samples, batch_size=32):
             yield shuffle(X_train, y_train)
 ```
 
-Then, the dataset was shuffeled and splitted into two parts, such that 20% of the data is used for validation:
+Then, the dataset was shuffeled and splitted into a training and validation set, such that 20% was for validation:
 
 ```python
 train_samples, validation_samples = train_test_split(samples, test_size=0.2)
