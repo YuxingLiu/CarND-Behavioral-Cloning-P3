@@ -78,8 +78,39 @@ with open(path + '/driving_log.csv') as csvfile:
         samples.append((right_path, -right_angle, -1))
 ```
 
- and randomly put 20% of the data into a validation set.
+The generator function is defined as follows:
 
+```python
+def generator(samples, batch_size=32):
+    num_samples = len(samples)
+    while 1: # loop forever so the generator never terminates
+        shuffle(samples)
+        for offset in range(0, num_samples, batch_size):
+            batch_samples = samples[offset:offset+batch_size]
+
+            images = []
+            angles = []
+            for batch_sample in batch_samples:
+                image = mpimg.imread(batch_sample[0])
+                angle = float(batch_sample[1])
+                if batch_sample[2] > 0:
+                    images.append(image)                # original image
+                else:
+                    images.append(cv2.flip(image, 1))   # flipped image
+                angles.append(angle)
+
+            X_train = np.array(images)
+            y_train = np.array(angles)
+            yield shuffle(X_train, y_train)
+```
+
+Then, the dataset is shuffeled and splitted, such that 20% of the data is used for validation:
+
+```python
+train_samples, validation_samples = train_test_split(samples, test_size=0.2)
+train_generator = generator(train_samples, batch_size=32)
+validation_generator = generator(validation_samples, batch_size=32)
+```
 
 I preprocessed this data by ...
 
