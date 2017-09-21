@@ -18,9 +18,9 @@ Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/4
 [//]: # (Image References)
 
 [image1]: ./images/center.jpg "Center Image"
-[image2]: ./images/left.jpg "Left Image"
-[image3]: ./images/right.jpg "Right Image"
-[image4]: ./examples/placeholder_small.png "Recovery Image"
+[image2]: ./images/multiple_cameras.png "Multiple Cameras"
+[image3]: ./images/left.jpg "Left Image"
+[image4]: ./images/right.jpg "Right Image"
 [image5]: ./examples/placeholder_small.png "Recovery Image"
 [image6]: ./examples/placeholder_small.png "Normal Image"
 [image7]: ./examples/placeholder_small.png "Flipped Image"
@@ -31,13 +31,16 @@ Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/4
 
 To capture good driving behavior, I first recorded four laps on track one in a counter-clockwise direction, focusing on center lane driving as well as smooth streering commends around curves. Here is an example image from the center camera:
 
+![alt text][image1]
+
+To train the model to be able to recover from being off-center, I use the side camera images, which are associated with adjusted steering angles as illstrated below:
+
 ![alt text][image2]
 
-I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to .... These images show what a recovery looks like starting from ... :
+Here are example images from the left and right cameras:
 
 ![alt text][image3]
 ![alt text][image4]
-![alt text][image5]
 
 Then I repeated this process on track two in order to get more data points.
 
