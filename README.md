@@ -48,7 +48,6 @@ Then I repeated this process on track one in clockwise direction, in order to av
 ![alt text][image6]
 ![alt text][image7]
 
-
 To augment the data sat, I also flipped images and angles thinking that this would ... For example, here is an image that has then been flipped:
 
 
