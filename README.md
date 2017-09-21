@@ -21,9 +21,9 @@ Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/4
 [image2]: ./images/multiple_cameras.png "Multiple Cameras"
 [image3]: ./images/left.jpg "Left Image"
 [image4]: ./images/right.jpg "Right Image"
-[image5]: ./examples/placeholder_small.png "Recovery Image"
-[image6]: ./examples/placeholder_small.png "Normal Image"
-[image7]: ./examples/placeholder_small.png "Flipped Image"
+[image5]: ./images/left_cw.jpg "Left Image Clockwise"
+[image6]: ./images/center_cw.jpg "Center Image Clockwise"
+[image7]: ./images/right_cw.jpg "Right Image Clockwise"
 
 ---
 
@@ -42,12 +42,15 @@ Here are example images from the left and right cameras:
 ![alt text][image3]
 ![alt text][image4]
 
-Then I repeated this process on track two in order to get more data points.
+Then I repeated this process on track one in clockwise direction, in order to aviod a left turn bias. Here are example images from the left, center and right cameras in clockwise direction:
+
+![alt text][image5]
+![alt text][image6]
+![alt text][image7]
+
 
 To augment the data sat, I also flipped images and angles thinking that this would ... For example, here is an image that has then been flipped:
 
-![alt text][image6]
-![alt text][image7]
 
 Etc ....
 
