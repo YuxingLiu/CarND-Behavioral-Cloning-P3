@@ -25,6 +25,7 @@ Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/4
 [image6]: ./images/center_cw.jpg "Center Image Clockwise"
 [image7]: ./images/right_cw.jpg "Right Image Clockwise"
 [image8]: ./images/architecture.png "CNN Architecture"
+[image9]: ./images/losds.png "Loss for Each Epoch"
 
 ---
 
@@ -173,7 +174,7 @@ model.add(Dense(1))
 
 ## Train, Validate and Test the Model
 
-The optimization problem considers to minimize the mean squared error between the steering angle predicted by the network and the actual one, using the [Adam optimizer](https://www.tensorflow.org/versions/r1.2/api_docs/python/tf/train/AdamOptimizer) with default `learning_rate=1e-3`. 
+The optimization problem considers to minimize the mean squared error between the steering angle predicted by the network and the actual one, using the [Adam optimizer](https://www.tensorflow.org/versions/r1.2/api_docs/python/tf/train/AdamOptimizer) with default `lr=1e-3`. 
 
 The code for training the model by `fit_generator` is provided as follows:
 ```python
@@ -183,78 +184,7 @@ hist = model.fit_generator(train_generator, samples_per_epoch=len(train_samples)
 model.save('model.h5')
 ```
 
-####1. An appropriate model architecture has been employed
+With default `batch_size=32`, the model was trained in 10 epoches, and the training and validation losses are visualized here:
 
-My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py lines 18-24) 
+![alt text][image9]
 
-The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18). 
-
-####2. Attempts to reduce overfitting in the model
-
-The model contains dropout layers in order to reduce overfitting (model.py lines 21). 
-
-The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 10-16). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
-
-####3. Model parameter tuning
-
-The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 25).
-
-####4. Appropriate training data
-
-Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road ... 
-
-For details about how I created the training data, see the next section. 
-
-###Model Architecture and Training Strategy
-
-####1. Solution Design Approach
-
-The overall strategy for deriving a model architecture was to ...
-
-My first step was to use a convolution neural network model similar to the ... I thought this model might be appropriate because ...
-
-In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
-
-To combat the overfitting, I modified the model so that ...
-
-Then I ... 
-
-The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track... to improve the driving behavior in these cases, I ....
-
-At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
-
-####2. Final Model Architecture
-
-The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
-
-Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
-
-![alt text][image1]
-
-####3. Creation of the Training Set & Training Process
-
-To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
-
-![alt text][image2]
-
-I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to .... These images show what a recovery looks like starting from ... :
-
-![alt text][image3]
-![alt text][image4]
-![alt text][image5]
-
-Then I repeated this process on track two in order to get more data points.
-
-To augment the data sat, I also flipped images and angles thinking that this would ... For example, here is an image that has then been flipped:
-
-![alt text][image6]
-![alt text][image7]
-
-Etc ....
-
-After the collection process, I had X number of data points. I then preprocessed this data by ...
-
-
-I finally randomly shuffled the data set and put Y% of the data into a validation set. 
-
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
