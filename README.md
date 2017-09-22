@@ -188,3 +188,10 @@ With default `batch_size=32`, the model was trained in 10 epoches, and the train
 
 ![alt text][image9]
 
+The low prediction errors on both training and validaiton sets imply that the model is neither underfitting nor overfitting.
+
+Finally, the trained model was tested in the simulator by executing
+```python
+python drive.py model.h5
+```
+It can be seen in the video run3.mp4, the car can be driven autonomously around the first track.
