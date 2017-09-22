@@ -49,7 +49,7 @@ Then I repeated this process on track one in clockwise direction, in order to av
 ![alt text][image6]
 ![alt text][image7]
 
-To augment the dataset, I also flipped images and angles thinking that this would help the model generalize better. After the collection process, I had 58836 data points. To work with such large amounts of data in a momory-efficient way, I used a Python generator to pull pieces of the data and process them on the fly. The code to record the path of images and steer angles are shown below:
+To augment the dataset, I also flipped images and angles thinking that this would help the model generalize better. After the collection process, I had 58836 data points. To work with such large amounts of data in a momory-efficient way, I used a Python generator to pull pieces of the data and process them on the fly. The code to record the path of images and steer angles is shown below:
 
 ```python
 path = 'data_track1'
@@ -116,20 +116,61 @@ validation_generator = generator(validation_samples, batch_size=32)
 Finally, I preprocessed this data by cropping images and normalization, using a Cropping2D layer and lambda layer in Keras:
 
 ```python
+model.add(Cropping2D(cropping=((60, 20), (0, 0)), input_shape=(160, 320, 3)))
+model.add(Lambda(lambda x: (x/255.0) - 0.5))
+```
+
+## Design and Test a Model Architecture
+
+My final model architecture consisted of 8 layers, including a cropping/normalization layer, 5 convolutional layers, and 2 fully connected layers. Here is a visualization of the architecture:
+
+![alt text][image8]
+
+The first 3 convolutional layers consisted of 16, 24, 32 (respectively) 5x5 filters, followed by 2x2 max pooling. The last two convolutional layers used 48 3x3 filters and 64 2x2 filters, respectively. The output of the fifth convolutional layer was flatten and fed to 2 fully connected layers, with were composed of 128 and 16 neurons, respectively. In addition, the model includes RELU layers to introduce nonlinearity, and dropout layers to prevent overfitting. The code to defind the network architecture in Keras is given below:
+
+```python
 # Define network architecture using Keras
 model = Sequential()
 # Layer 1: Cropping Images
 model.add(Cropping2D(cropping=((60, 20), (0, 0)), input_shape=(160, 320, 3)))
 # Normalization
 model.add(Lambda(lambda x: (x/255.0) - 0.5))
+
+# Layer 2: 5x5 Convolutional. Input = 80x320x3. Output = 76x316x16.
+model.add(Conv2D(16, 5, 5, activation='relu'))
+# 2x2 Pooling. Output = 38x158x16.
+model.add(MaxPooling2D())
+
+# Layer 3: 5x5 Convolutional. Output = 34x154x24.
+model.add(Conv2D(24, 5, 5, activation='relu'))
+# 2x2 Pooling. Output = 17x77x24.
+model.add(MaxPooling2D())
+
+# Layer 4: 5x5 Convolutional. Output = 13x73x32.
+model.add(Conv2D(32, 5, 5, activation='relu'))
+# 2x2 Pooling. Output = 6x36x32.
+model.add(MaxPooling2D())
+
+# Layer 5: 3x3 Convolutional. Output = 4x34x48.
+model.add(Conv2D(48, 3, 3, activation='relu'))
+# 2x2 Pooling. Output = 2x17x48.
+model.add(MaxPooling2D())
+
+# Layer 6: 2x2 Convolutional. Output = 1x16x64.
+model.add(Conv2D(64, 2, 2, activation='relu'))
+model.add(Flatten())
+model.add(Dropout(0.5))
+
+# Layer 7: Fully Connected. Input = 1024. Output = 128.
+model.add(Dense(128, activation='relu'))
+model.add(Dropout(0.5))
+
+# Layer 8: Fully Connected. Output = 16.
+model.add(Dense(16, activation='relu'))
+
+# Output = steer angle.
+model.add(Dense(1))
 ```
-
-## Design and Test a Model Architecture
-
-My final model architecture consisted of 8 layers, including a normalization layer, 5 convolutional layers, and 2 fully fully connected layers. Here is a visualization of the architecture:
-
-![alt text][image8]
-
 
 ####1. An appropriate model architecture has been employed
 
