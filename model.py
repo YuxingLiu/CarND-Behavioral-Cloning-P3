@@ -41,13 +41,6 @@ with open(path + '/driving_log.csv') as csvfile:
         samples.append((right_path, -right_angle, -1))
 
 
-# Split the dataset, use 80% for training and 20% for validation
-train_samples, validation_samples = train_test_split(samples, test_size=0.2)
-print(len(samples))
-print(len(train_samples))
-print(len(validation_samples))
-
-
 # Use a generator to load data and preprocess it on the fly
 def generator(samples, batch_size=32):
     num_samples = len(samples)
@@ -72,6 +65,12 @@ def generator(samples, batch_size=32):
             yield shuffle(X_train, y_train)
 
 
+# Split the dataset, use 80% for training and 20% for validation
+train_samples, validation_samples = train_test_split(samples, test_size=0.2)
+print(len(samples))
+print(len(train_samples))
+print(len(validation_samples))
+
 # Compile and train the model using the generator function
 train_generator = generator(train_samples, batch_size=32)
 validation_generator = generator(validation_samples, batch_size=32)
@@ -79,41 +78,41 @@ validation_generator = generator(validation_samples, batch_size=32)
 
 # Define network architecture using Keras
 model = Sequential()
+# Layer 1: Cropping Images
+model.add(Cropping2D(cropping=((60, 20), (0, 0)), input_shape=(160, 320, 3)))
 # Normalization
-model.add(Lambda(lambda x: (x/255.0) - 0.5, input_shape=(160, 320, 3)))
-# Trim image to only see section with road
-model.add(Cropping2D(cropping=((60, 20), (0, 0))))
+model.add(Lambda(lambda x: (x/255.0) - 0.5))
 
-# Layer 1: 5x5 Convolutional. Input = 80x320x3. Output = 76x316x16.
+# Layer 2: 5x5 Convolutional. Input = 80x320x3. Output = 76x316x16.
 model.add(Conv2D(16, 5, 5, activation='relu'))
 # 2x2 Pooling. Output = 38x158x16.
 model.add(MaxPooling2D())
 
-# Layer 2: 5x5 Convolutional. Output = 34x154x24.
+# Layer 3: 5x5 Convolutional. Output = 34x154x24.
 model.add(Conv2D(24, 5, 5, activation='relu'))
 # 2x2 Pooling. Output = 17x77x24.
 model.add(MaxPooling2D())
 
-# Layer 3: 5x5 Convolutional. Output = 13x73x32.
+# Layer 4: 5x5 Convolutional. Output = 13x73x32.
 model.add(Conv2D(32, 5, 5, activation='relu'))
 # 2x2 Pooling. Output = 6x36x32.
 model.add(MaxPooling2D())
 
-# Layer 4: 3x3 Convolutional. Output = 4x34x48.
+# Layer 5: 3x3 Convolutional. Output = 4x34x48.
 model.add(Conv2D(48, 3, 3, activation='relu'))
 # 2x2 Pooling. Output = 2x17x48.
 model.add(MaxPooling2D())
 
-# Layer 5: 2x2 Convolutional. Output = 1x16x64.
+# Layer 6: 2x2 Convolutional. Output = 1x16x64.
 model.add(Conv2D(64, 2, 2, activation='relu'))
 model.add(Flatten())
 model.add(Dropout(0.5))
 
-# Layer 6: Fully Connected. Input = 1024. Output = 128.
+# Layer 7: Fully Connected. Input = 1024. Output = 128.
 model.add(Dense(128, activation='relu'))
 model.add(Dropout(0.5))
 
-# Layer 7: Fully Connected. Output = 16.
+# Layer 8: Fully Connected. Output = 16.
 model.add(Dense(16, activation='relu'))
 
 # Output = steer angle.
