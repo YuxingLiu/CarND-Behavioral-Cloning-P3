@@ -194,4 +194,4 @@ Finally, the trained model was tested in the simulator by executing
 ```python
 python drive.py model.h5
 ```
-It can be seen in the video run3.mp4, the car can be driven autonomously around the first track.
+It can be seen in the video run3.mp4, the car can be driven autonomously around track one without leaving the road.
