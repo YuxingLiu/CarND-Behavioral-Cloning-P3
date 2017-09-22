@@ -25,7 +25,7 @@ Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/4
 [image6]: ./images/center_cw.jpg "Center Image Clockwise"
 [image7]: ./images/right_cw.jpg "Right Image Clockwise"
 [image8]: ./images/architecture.png "CNN Architecture"
-[image9]: ./images/losds.png "Loss for Each Epoch"
+[image9]: ./images/loss.png "Visualization of Loss"
 
 ---
 
