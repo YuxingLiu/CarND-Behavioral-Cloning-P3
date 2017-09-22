@@ -1,6 +1,6 @@
 # Behavioral Cloning Project
 
-This repository presents the code to train a deep neural network to clone driving behavior, by mappming raw pixels from a single front-facing camera directly to steering commands.
+This repository presents the code to train a deep neural network to clone driving behavior, by mapping raw pixels from a single front-facing camera directly to steering commands.
 
 ---
 
@@ -30,11 +30,11 @@ Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/4
 
 ## Creation of the Training/Validation Set
 
-To capture good driving behavior, I first recorded four laps on track one in a counter-clockwise direction, focusing on center lane driving as well as smooth streering commends around curves. Here is an example image from the center camera:
+To capture good driving behavior, I first recorded four laps on track one in a counter-clockwise direction, focusing on center lane driving as well as smooth steering commends around curves. Here is an example image from the center camera:
 
 ![alt text][image1]
 
-To train the model to be able to recover from being off-center, I used the side camera images, which are associated with adjusted steering angles as illstrated below:
+To train the model to be able to recover from being off-center, I used the side camera images, which are associated with adjusted steering angles as illustrated below:
 
 ![alt text][image2]
 
@@ -43,13 +43,13 @@ Here are example images from the left and right cameras:
 ![alt text][image3]
 ![alt text][image4]
 
-Then I repeated this process on track one in clockwise direction, in order to aviod a left turn bias. Here are example images from the left, center and right cameras in clockwise direction:
+Then I repeated this process on track one in clockwise direction, in order to avoid a left turn bias. Here are example images from the left, center and right cameras in clockwise direction:
 
 ![alt text][image5]
 ![alt text][image6]
 ![alt text][image7]
 
-To augment the dataset, I also flipped images and angles thinking that this would help the model generalize better. After the collection process, I had 58836 data points. To work with such large amounts of data in a momory-efficient way, I used a Python generator to pull pieces of the data and process them on the fly. The code to record the path of images and steer angles is shown below:
+To augment the dataset, I also flipped images and angles thinking that this would help the model generalize better. After the collection process, I had 58836 data points. To work with such large amounts of data in a memory-efficient way, I used a Python generator to pull pieces of the data and process them on the fly. The code to record the path of images and steer angles is shown below:
 
 ```python
 path = 'data_track1'
@@ -105,7 +105,7 @@ def generator(samples, batch_size=32):
             yield shuffle(X_train, y_train)
 ```
 
-Then, the dataset was shuffeled and splitted into a training and validation set, such that 20% was for validation:
+Then, the dataset was shuffled and split into a training and validation set, such that 20% was for validation:
 
 ```python
 train_samples, validation_samples = train_test_split(samples, test_size=0.2)
@@ -120,16 +120,15 @@ model.add(Cropping2D(cropping=((60, 20), (0, 0)), input_shape=(160, 320, 3)))
 model.add(Lambda(lambda x: (x/255.0) - 0.5))
 ```
 
-## Design and Test a Model Architecture
+## Design a Model Architecture
 
 My final model architecture consisted of 8 layers, including a cropping/normalization layer, 5 convolutional layers, and 2 fully connected layers. Here is a visualization of the architecture:
 
 ![alt text][image8]
 
-The first 3 convolutional layers consisted of 16, 24, 32 (respectively) 5x5 filters, followed by 2x2 max pooling. The last two convolutional layers used 48 3x3 filters and 64 2x2 filters, respectively. The output of the fifth convolutional layer was flatten and fed to 2 fully connected layers, with were composed of 128 and 16 neurons, respectively. In addition, the model includes RELU layers to introduce nonlinearity, and dropout layers to prevent overfitting. The code to defind the network architecture in Keras is given below:
+The first 3 convolutional layers consisted of 16, 24, 32 (respectively) 5x5 filters, followed by 2x2 max pooling. The last two convolutional layers used 48 3x3 filters and 64 2x2 filters, respectively. The output of the fifth convolutional layer was flatten and fed to 2 fully connected layers, which were composed of 128 and 16 neurons, respectively. In addition, the model includes RELU layers to introduce nonlinearity, and dropout layers to prevent overfitting. The code to define the network architecture in Keras is given below:
 
 ```python
-# Define network architecture using Keras
 model = Sequential()
 # Layer 1: Cropping Images
 model.add(Cropping2D(cropping=((60, 20), (0, 0)), input_shape=(160, 320, 3)))
@@ -170,6 +169,18 @@ model.add(Dense(16, activation='relu'))
 
 # Output = steer angle.
 model.add(Dense(1))
+```
+
+## Train, Validate and Test the Model
+
+The optimization problem considers to minimize the mean squared error between the steering angle predicted by the network and the actual one, using the [Adam optimizer](https://www.tensorflow.org/versions/r1.2/api_docs/python/tf/train/AdamOptimizer) with default `learning_rate=1e-3`. 
+
+The code for training the model by `fit_generator` is provided as follows:
+```python
+model.compile(loss='mse', optimizer='adam')
+hist = model.fit_generator(train_generator, samples_per_epoch=len(train_samples), nb_epoch=10,
+                           validation_data=validation_generator, nb_val_samples=len(validation_samples))
+model.save('model.h5')
 ```
 
 ####1. An appropriate model architecture has been employed
