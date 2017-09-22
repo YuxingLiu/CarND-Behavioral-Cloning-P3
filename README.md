@@ -127,7 +127,7 @@ My final model architecture consisted of 8 layers, including a cropping/normaliz
 
 ![alt text][image8]
 
-The first 3 convolutional layers consisted of 16, 24, 32 (respectively) 5x5 filters, followed by 2x2 max pooling. The last two convolutional layers used 48 3x3 filters and 64 2x2 filters, respectively. The output of the fifth convolutional layer was flatten and fed to 2 fully connected layers, which were composed of 128 and 16 neurons, respectively. In addition, the model includes RELU layers to introduce nonlinearity, and dropout layers to prevent overfitting. The code to define the network architecture in Keras is given below:
+The first 3 convolutional layers consisted of 16, 24, 32 (respectively) 5x5 filters, followed by 2x2 max pooling. The last two convolutional layers used 48 3x3 filters and 64 2x2 filters, respectively. The output of the fifth convolutional layer was flatten and fed to 2 fully connected layers, which were composed of 128 and 16 neurons, respectively. In addition, the model includes RELU layers to introduce nonlinearity, and dropout layers to reduce overfitting. The code to define the network architecture in Keras is given below:
 
 ```python
 model = Sequential()
