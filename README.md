@@ -24,10 +24,11 @@ Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/4
 [image5]: ./images/left_cw.jpg "Left Image Clockwise"
 [image6]: ./images/center_cw.jpg "Center Image Clockwise"
 [image7]: ./images/right_cw.jpg "Right Image Clockwise"
+[image8]: ./images/architecture.png "CNN Architecture"
 
 ---
 
-## Step1: Creation of the Training/Validation Set
+## Creation of the Training/Validation Set
 
 To capture good driving behavior, I first recorded four laps on track one in a counter-clockwise direction, focusing on center lane driving as well as smooth streering commends around curves. Here is an example image from the center camera:
 
@@ -112,18 +113,23 @@ train_generator = generator(train_samples, batch_size=32)
 validation_generator = generator(validation_samples, batch_size=32)
 ```
 
-Finally, I preprocessed this data by image normalization and cropping, using a lambda layer and Cropping2D layer in Keras:
+Finally, I preprocessed this data by cropping images and normalization, using a Cropping2D layer and lambda layer in Keras:
 
 ```python
 # Define network architecture using Keras
 model = Sequential()
+# Layer 1: Cropping Images
+model.add(Cropping2D(cropping=((60, 20), (0, 0)), input_shape=(160, 320, 3)))
 # Normalization
-model.add(Lambda(lambda x: (x/255.0) - 0.5, input_shape=(160, 320, 3)))
-# Trim image to only see section with road
-model.add(Cropping2D(cropping=((60, 20), (0, 0))))
+model.add(Lambda(lambda x: (x/255.0) - 0.5))
 ```
 
----
+## Design and Test a Model Architecture
+
+My final model architecture consisted of 8 layers, including a normalization layer, 5 convolutional layers, and 2 fully fully connected layers. Here is a visualization of the architecture:
+
+![alt text][image8]
+
 
 ####1. An appropriate model architecture has been employed
 
