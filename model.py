@@ -116,7 +116,7 @@ model.add(Dropout(0.5))
 # Layer 7: Fully Connected. Output = 16.
 model.add(Dense(16, activation='relu'))
 
-# Layer 8: Fully Connected. Output = steer angle.
+# Output = steer angle.
 model.add(Dense(1))
 
 
