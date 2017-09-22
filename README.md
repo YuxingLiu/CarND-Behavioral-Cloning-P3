@@ -184,11 +184,11 @@ hist = model.fit_generator(train_generator, samples_per_epoch=len(train_samples)
 model.save('model.h5')
 ```
 
-With default `batch_size=32`, the model was trained in 10 epoches, and the training and validation losses are visualized here:
+With default `batch_size=32`, the model was trained in 10 epochs, and the training and validation losses are visualized here:
 
 ![alt text][image9]
 
-The low prediction errors on both training and validaiton sets imply that the model is neither underfitting nor overfitting.
+The low prediction errors on both training and validation sets imply that the model is neither underfitting nor overfitting.
 
 Finally, the trained model was tested in the simulator by executing
 ```python
